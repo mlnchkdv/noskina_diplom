@@ -1,2 +1,7 @@
+streamlit
 joblib
-sklearn
+numpy
+scikit-learn
+wordcloud
+matplotlib
+pandas
