@@ -6,5 +6,5 @@ wordcloud
 matplotlib
 pandas
 catboost
-simplemma
 nltk
+simplemma
