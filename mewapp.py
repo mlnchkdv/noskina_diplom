@@ -87,12 +87,12 @@ from collections import Counter
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import pandas as pd
+import re
+from simplemma import lemmatize
+from nltk.corpus import stopwords
 
 # Функция для очистки текста
 def clean_text(text):
-    import re
-    from simplemma import lemmatize
-    from nltk.corpus import stopwords
     stop_words = set(stopwords.words('russian') + stopwords.words('english'))
     text = re.sub(r"[^а-яА-Яa-zA-Z0-9\s]", "", text)
     text = text.lower()
