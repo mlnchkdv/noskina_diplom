@@ -128,7 +128,7 @@ models = {
     "DecisionTreeClassifier": joblib.load('DecisionTreeClassifier.pkl'),
     "KNeighborsClassifier": joblib.load('KNeighborsClassifier.pkl'),
     "MultinomialNB": joblib.load('MultinomialNB.pkl'),
-    "CatBoostClassifier": joblib.load('CatBoostClassifier.pkl'),
+    "CatBoostClassifier": joblib.load('/workspaces/noskina_diplom/CatBoostClassifier.pkl'),
     "LogisticRegression": joblib.load('LogisticRegression.pkl'),
     "SVC": joblib.load('SVC.pkl')
 }
