@@ -7,4 +7,4 @@ matplotlib
 pandas
 catboost
 nltk
-simplemma
+simplemma[ru]

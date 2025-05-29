@@ -90,6 +90,8 @@ import pandas as pd
 import re
 from simplemma import lemmatize
 from nltk.corpus import stopwords
+import nltk
+nltk.download('stopwords')
 
 # Функция для очистки текста
 def clean_text(text):
