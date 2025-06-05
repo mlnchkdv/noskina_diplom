@@ -93,8 +93,8 @@ from nltk.corpus import stopwords
 import nltk
 nltk.download('stopwords')
 
-import locale
-locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8') 
+# import locale
+# locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8') 
 
 # Функция для очистки текста
 def clean_text(text):
