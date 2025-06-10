@@ -94,18 +94,23 @@ import nltk
 nltk.download('stopwords')
 
 # import locale
-# locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8') 
+# locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
 
 # Функция для очистки текста
+
+
 def clean_text(text):
     stop_words = set(stopwords.words('russian') + stopwords.words('english'))
     text = re.sub(r"[^а-яА-Яa-zA-Z0-9\s]", "", text)
     text = text.lower()
     words = text.split()
-    cleaned_words = [lemmatize(word, 'ru') for word in words if word not in stop_words]
+    cleaned_words = [lemmatize(word, 'ru')
+                     for word in words if word not in stop_words]
     return " ".join(cleaned_words)
 
 # Функция для генерации ключевых слов
+
+
 def get_top_keywords(input_tfidf, vectorizer, top_n=5):
     feature_names = vectorizer.get_feature_names_out()
     tfidf_scores = input_tfidf.toarray()[0]
@@ -113,12 +118,16 @@ def get_top_keywords(input_tfidf, vectorizer, top_n=5):
     return [feature_names[idx] for idx in top_indices if tfidf_scores[idx] > 0]
 
 # Функция для создания облака слов
+
+
 def create_word_cloud(text):
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
+    wordcloud = WordCloud(width=800, height=400,
+                          background_color='white').generate(text)
     plt.figure(figsize=(10, 5))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
     st.pyplot(plt)
+
 
 # Загрузка сохраненных объектов
 vectorizer = joblib.load('tfidf_vectorizer.pkl')
@@ -157,14 +166,17 @@ if st.button("Анализировать"):
         input_tfidf = vectorizer.transform([cleaned_input])
 
         # Предсказание категории всеми моделями
-        predictions = [model.predict(input_tfidf)[0] for model in models.values()]
+        predictions = [model.predict(input_tfidf)[0]
+                       for model in models.values()]
 
         # Убедимся, что все предсказания - это скалярные значения
-        predictions = [pred.item() if isinstance(pred, np.ndarray) else pred for pred in predictions]
+        predictions = [pred.item() if isinstance(pred, np.ndarray)
+                       else pred for pred in predictions]
 
         # Выбираем самый частый класс (голосование большинства)
         most_common_pred = Counter(predictions).most_common(1)[0][0]
-        predicted_category = label_encoder.inverse_transform([most_common_pred])[0]
+        predicted_category = label_encoder.inverse_transform([most_common_pred])[
+            0]
 
         # Вывод предсказанной категории
         st.write(f"### Предсказанный раздел науки: **{predicted_category}**")
@@ -172,11 +184,13 @@ if st.button("Анализировать"):
         # Генерация ключевых слов
         top_keywords = get_top_keywords(input_tfidf, vectorizer, top_n=5)
         st.write("### Возможные ключевые слова для заголовка (леммы):")
-        st.write(", ".join(top_keywords) if top_keywords else "Ключевые слова не найдены.")
+        st.write(", ".join(top_keywords)
+                 if top_keywords else "Ключевые слова не найдены.")
 
         # Поиск похожих статей
         similarities = cosine_similarity(input_tfidf, all_titles_tfidf)[0]
-        top_indices = np.argsort(similarities)[::-1][:5]  # Топ-5 по убыванию сходства
+        # Топ-5 по убыванию сходства
+        top_indices = np.argsort(similarities)[::-1][:5]
 
         st.write("### Топ-5 похожих статей:")
         found_similar_articles = False
@@ -185,8 +199,10 @@ if st.button("Анализировать"):
             if similarity_score > 0:  # Только статьи с ненулевым сходством
                 found_similar_articles = True
                 title = articles_data.iloc[idx]['title']
-                category = label_encoder.inverse_transform([articles_data.iloc[idx]['category']])[0]
-                st.write(f"- **{title}** (Раздел: {category}, Сходство: {similarity_score:.4f})")
+                category = label_encoder.inverse_transform(
+                    [articles_data.iloc[idx]['category']])[0]
+                st.write(
+                    f"- **{title}** (Раздел: {category}, Сходство: {similarity_score:.4f})")
 
         if not found_similar_articles:
             st.write("Похожих статей в базе данных не найдено.")
